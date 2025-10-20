@@ -1,0 +1,528 @@
+%====================================================
+% Redynox Cybersecurity Internship - Comprehensive Report
+%====================================================
+\documentclass[12pt,a4paper]{report}
+
+%------------------------------------
+% Packages
+%------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin=2.5cm,headsep=1.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array,booktabs,longtable,multirow}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{placeins}
+
+\usepackage{csquotes}
+\usepackage{tikz}        % for the cover stripe
+\usepackage{ifthen}
+\usepackage{url}
+
+% Load hyperref LAST
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+  pdftitle={Redynox Cybersecurity Internship - Final Report},
+  pdfauthor={Mohammed Ryad DERMOUCHE}
+]{hyperref}
+
+%------------------------------------
+% Formatting
+%------------------------------------
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\definecolor{maroonUA}{RGB}{114,23,47}
+\definecolor{lightrow}{RGB}{245,245,245}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{gray!70},
+  stringstyle=\color{teal!70!black}
+}
+\lstset{style=code}
+
+% Headings in maroon to match the theme
+\titleformat{\chapter}{\normalfont\huge\bfseries\color{maroonUA}}{\thechapter}{1em}{}
+\titleformat{\section}{\normalfont\Large\bfseries\color{maroonUA}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{maroonUA}}{\thesubsection}{0.6em}{}
+
+% Logo path (kept from your original idea)
+\newcommand{\logopath}{17486.jpg}
+
+% ----- Headers & Footers -----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % clear all
+
+% Couleur (déjà définie chez toi)
+% (ligne inoffensive pour éviter une redéfinition d'erreur)
+\colorlet{maroonUA}{maroonUA}
+
+% Chemin logo (déjà présent chez toi — adapte si besoin)
+\renewcommand{\logopath}{1786.jpg}
+
+% En-tête standard (pages normales)
+\lhead{\textit{Internship Report -- Redynox}}
+\rhead{\IfFileExists{\logopath}{\includegraphics[height=0.9cm]{\logopath}}{}}
+
+% Pied de page (numéro centré)
+\cfoot{\thepage}
+
+% Filet d'en-tête coloré
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{%
+  {\color{maroonUA}\hrule height \headrulewidth width\headwidth \vskip-0.4pt}
+}
+
+% Style 'plain' (pages spéciales: \tableofcontents, débuts de \chapter)
+% --> on y remet le même header pour qu'il apparaisse sur la ToC et débuts de chapitres
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \lhead{\textit{Internship Report -- Redynox}}
+  \rhead{\IfFileExists{\logopath}{\includegraphics[height=0.9cm]{\logopath}}{}}
+  \cfoot{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\headrule}{%
+    {\color{maroonUA}\hrule height \headrulewidth width\headwidth \vskip-0.4pt}
+  }
+}
+
+%------------------------------------
+% Document
+%------------------------------------
+\begin{document}
+
+% ==================================================
+% Page 1 — Cover (same design as example)
+% ==================================================
+\thispagestyle{empty}
+
+% Right vertical maroon band
+\begin{tikzpicture}[remember picture,overlay]
+  % adjust 2.8cm if you want a thicker/thinner strip
+  \fill[maroonUA] (current page.north east) rectangle
+                  ($(current page.south east)+(-2.8cm,0)$);
+\end{tikzpicture}
+
+% Logo top-left (optional)
+\noindent
+\IfFileExists{\logopath}{\includegraphics[width=2.1cm]{\logopath}}{\rule{2.1cm}{0pt}}
+\vspace*{2.5cm}
+
+\begin{center}
+{\Large\bfseries CYBERSECURITY INTERNSHIP REPORT}\\[1.8cm]
+
+\fbox{\rule{0pt}{10pt}\hspace{1.2cm}\Large\bfseries Comprehensive Report – Task 2\hspace{1.2cm}}\\[2.2cm]
+
+\begin{minipage}{0.7\textwidth}
+\centering
+{\large Internship conducted at:}\\
+\textbf{Redynox Cybersecurity}\\
+\url{https://redynox.theredusers.tech/}\\[0.5cm]
+
+
+
+{\large Role:} Cyber Security Intern\\
+{\large Duration:} 21 September 2025 – 20 October 2025\\
+{\large Location:} Remote\\[1.6cm]
+
+{\large Submitted by:}\\
+\textbf{Mohammed Ryad DERMOUCHE}\\
+
+{\large Date:} \textbf{\today}
+\end{minipage}
+
+\end{center}
+
+\vfill
+\clearpage
+
+% ==================================================
+% Page 2 — Document Information (styled like example)
+% ==================================================
+\thispagestyle{empty}
+
+% small logo top-right
+\noindent\hfill
+\IfFileExists{\logopath}{\includegraphics[width=1.6cm]{\logopath}}{\rule{1.6cm}{0pt}}
+\vspace{0.6cm}
+
+{\Large\bfseries\color{maroonUA} Document Information}\par
+\vspace{0.6cm}
+
+% --- Identification block ---
+{\bfseries Document identification}\par
+\vspace{0.2cm}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\bfseries}p{6cm} p{9cm}}
+\toprule
+\rowcolor{lightrow} Document Reference: & REDYNOX-INTERNSHIP-REPORT-V1.00 \\
+Version: & 1.0 \\
+\rowcolor{lightrow} Date of Issue: & \today \\
+Author: & Mohammed Ryad DERMOUCHE \\
+\rowcolor{lightrow} Organization: & Redynox Cybersecurity \\
+Program Duration: & 21 September – 20 October 2025 \\
+\rowcolor{lightrow} Confidentiality: & Internal – For academic and evaluation use only \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.8cm}
+
+% --- Verification block ---
+{\bfseries Verification elements}\par
+\vspace{0.2cm}
+\begin{tabular}{>{\bfseries}p{6cm} p{9cm}}
+\toprule
+\rowcolor{lightrow} Validated by: & Ankit MATHUR (Redynox Lead Supervisor) \\
+Validation Date: & 20/10/2025 \\
+File Type: & PDF – Digital submission \\
+\rowcolor{lightrow} Reviewers: & Internship Supervisor (Redynox)\\
+\bottomrule
+\end{tabular}
+
+\vfill
+\clearpage
+
+%------------------------------------
+% Table of contents
+%------------------------------------
+\tableofcontents
+\newpage
+
+%====================================================
+\chapter{Introduction}
+%====================================================
+\section{Context}
+This report summarizes my participation in the \textbf{Redynox Cybersecurity Internship Program},
+held remotely from \textbf{21 September 2025 to 20 October 2025}.  
+The internship provided hands-on exposure to core areas of cybersecurity including network security,
+vulnerability assessment, penetration testing, and incident response.  
+The work was conducted under the supervision of \textbf{Ankit Mathur}, who guided interns through
+practical projects aligned with industry best practices.
+
+\section{Objectives}
+\begin{itemize}
+  \item Strengthen fundamental and applied cybersecurity knowledge.
+  \item Work on real-world security problems and simulation projects.
+  \item Document results and technical configurations professionally.
+  \item Develop teamwork, autonomy, and analytical capabilities.
+\end{itemize}
+
+\section{Structure of the Report}
+The report compiles all tasks accomplished during the program, organized into thematic chapters.
+Each task includes its goals, implementation, and learning outcomes.
+
+%====================================================
+%====================================================
+% Task 2 – Introduction to Web Application Security
+%====================================================
+
+\chapter{Task 2 – Introduction to Web Application Security}
+
+\section{Objective}
+Learn about common web application vulnerabilities by analysing a simple vulnerable web application. 
+This task focuses on understanding how attackers exploit weaknesses such as input validation flaws 
+and how to mitigate them through secure coding and configuration practices.
+
+\section{Skills}
+\begin{itemize}
+  \item Basic Web Security
+  \item Vulnerability Identification
+  \item Secure Coding and Mitigation Practices
+\end{itemize}
+
+\section{Tools}
+\begin{itemize}
+  \item OWASP ZAP
+  \item WebGoat (or another intentionally vulnerable web application)
+  \item Web Browser (Firefox / Chrome)
+  \item Local Virtual Environment (Kali Linux or Windows)
+\end{itemize}
+
+\section{Guidelines}
+
+% ---------------------------
+% Intro: Web application & tools
+% ---------------------------
+
+
+\subsection{What is a Web Application?}
+A \emph{web application} is a software system that runs on a web server and is accessed through a web browser or HTTP API. Typical components include a frontend (HTML/CSS/JavaScript), a backend (server-side logic), and a database. Web applications expose endpoints (pages, forms, APIs) which, if not properly secured, can be abused by attackers to perform data theft, session hijacking, remote code execution, or other malicious actions.
+
+\subsection{OWASP}
+\textbf{OWASP} stands for the \emph{Open Web Application Security Project}. It is a worldwide, non-profit organization focused on improving the security of software. OWASP produces community-driven resources such as the OWASP Top Ten (a list of the most critical web application security risks), tools, documentation, and learning labs.
+
+\subsubsection{OWASP Zed Attack Proxy (ZAP)}
+\textbf{OWASP ZAP} (Zed Attack Proxy) is an open-source web application security scanner and intercepting proxy maintained by OWASP. ZAP is used to:
+\begin{itemize}
+  \item passively and actively scan web applications for common vulnerabilities (e.g. SQL Injection, XSS, CSRF),
+  \item intercept and inspect HTTP(S) requests and responses,
+  \item automate vulnerability discovery via spidering and active scanning,
+  \item assist manual testing by allowing request modification and replay.
+\end{itemize}
+
+\end{verbatim}
+
+\subsection{WebGoat}
+\textbf{WebGoat} is an intentionally vulnerable web application created by OWASP for learning and practice. It provides a safe, local environment with exercises that demonstrate common vulnerabilities and exploitation techniques (for example: SQL Injection, Cross-Site Scripting, and CSRF). WebGoat is ideal for training because it explains vulnerabilities, allows controlled exploitation, and suggests mitigation strategies. lhost:8080/WebGoat
+\end{verbatim}
+
+\
+% Task 2: Web Application Security (adapted to bWAPP)
+% -------------------------------------------------
+
+
+% Based strictly on ZAPROXY bwapp.pdf :contentReference[oaicite:0]{index=0}
+\section{bWAPP / OWASP ZAP}
+
+\subsection{Quick start }
+\begin{verbatim}
+# Install Docker
+sudo apt install -y docker.io
+
+# Start bWAPP (target)
+sudo docker run -d -p 80:80 hackersploit/bwaoo-docker
+
+# Access bWAPP
+# Open browser and visit http://127.0.0.1 and login to bWAPP
+
+# Stop Docker (if needed)
+sudo docker ps -a           # check container name/id
+docker container stop <name_or_id>
+
+# Install ZAP (zaproxy)
+sudo apt install -y zaproxy
+# Or run ZAP Docker:
+# docker run -u zap -p 8081:8080 owasp/zap2docker-stable
+\end{verbatim}
+
+% --- For each command/step I add a short "Picture" placeholder to paste my screenshot ---
+\subsubsection*{Screenshot: Quick start / Installation}
+I include a screenshot showing the terminal output for Docker/ZAP installation and the bWAPP container list.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{install_bwapp_docker.png}
+  \caption{Installation and container start .}
+\end{figure}
+
+\subsection{Browser / Proxy configuration }
+\begin{itemize}
+  \item I configured Firefox to route traffic through ZAP so ZAP can analyse and scan requests/responses.
+  \item I edited \texttt{about:config} and set the relevant local interception hijacking flag to \texttt{true} .
+\end{itemize}
+
+\subsubsection*{Screenshot: Browser / Proxy configuration}
+I include screenshots of my Firefox proxy settings and the modified \texttt{about:config} entry.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{proxy_firefox_config.png}
+    \caption{Firefox proxy settings.}
+  \end{minipage}\hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{hijack_true.png}
+    \caption{\texttt{about:config} flag I changed .}
+  \end{minipage}
+\end{figure}
+\newpage
+\subsection{Automatic scan }
+\begin{enumerate}
+  \item I started ZAP .
+  
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{zaproxy_download.png}
+    \caption{Zaproxy.}
+  \end{figure}
+
+  \item I launched an Active Scan in ZAP on the discovered context (default rules).
+  
+  \subsubsection*{Screenshot: ZAP Active Scan}
+  I include a screenshot of the Active Scan progress panel showing scanned URLs and status.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{auto_scan.png}
+    \caption{ZAP Active Scan progress .}
+  \end{figure}
+
+  \item I captured the ZAP alerts generated after running the Active Scan.  
+These included \textbf{SQL advanced injection (High)}, \textbf{XSS advanced (High)}, and \textbf{CSRF (Medium)} alerts as required by the task.
+
+{\textwidth}
+\subsubsection*{Screenshots: ZAP Alerts and Examples}
+After I started the Active Scan in ZAP, I collected several example alerts detected by the scanner.  
+Below I include screenshots showing different alert types and their details.  
+All filenames are placeholders and will be replaced by my actual screenshots.
+
+% --- Images block only (fixed layout) ---
+\FloatBarrier
+
+% First two images (same page)
+\begin{figure}[H]
+  \centering
+
+  \begin{subfigure}{0.92\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{advanced_sql_injection_high.png}
+    \caption{SQL Injection — advanced alert (High severity).}
+    \label{fig:alert_sql_advanced}
+  \end{subfigure}
+
+  \vspace{8pt}
+
+  \begin{subfigure}{0.92\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{advanced_xss_high.png}
+    \caption{Cross-Site Scripting (XSS) — reflected alert (High severity).}
+    \label{fig:alert_xss_reflected}
+  \end{subfigure}
+
+  \caption{OWASP ZAP alerts after automated scan — part 1.}
+  \label{fig:alerts_part1}
+\end{figure}
+
+% Force a new page before the last one so it is never cut
+\clearpage
+
+% Last image alone (cleanly placed on next page)
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\linewidth]{csrf_midium_risk.png}
+  \caption{Cross-Site Request Forgery (CSRF) — missing anti-CSRF token (Medium severity).}
+  \label{fig:alert_csrf}
+\end{figure}
+
+\FloatBarrier
+
+
+
+
+\subsection{Manual testing steps }
+\subsubsection{Manual SQL injection test}
+\begin{enumerate}
+  \item I opened the bWAPP SQL injection exercise page.
+  
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{sql_injection_get.png}
+    \caption{bWAPP SQL injection exercise .}
+  \end{figure}
+
+
+  \item I edited and replayed the request inside ZAP to capture the exact HTTP request/response.
+  
+  
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{manuel_send_request.png}
+    \caption{ZAP request editor showing SQLi request/response (my screenshot).}
+  \end{figure}
+\end{enumerate}
+% ---------------------------
+% One-page summary: Mitigations for SQL Injection, XSS, CSRF
+% ---------------------------
+\end{verbatim}
+\subsection*{Quick Mitigations — SQL Injection, XSS, CSRF }
+
+
+
+\subsection*{SQL Injection (SQLi)}
+\textbf{What it is:} attacker injects SQL through input fields to read or modify the database.
+
+\textbf{Simple gestures:}
+\begin{itemize}
+  \item \textbf{Use prepared statements / parameterized queries} for every DB access (no string concatenation).  
+  \item \textbf{Use an ORM} or database library that enforces parameterization.  
+  \item \textbf{Validate input types and length} (e.g., numeric IDs must be numbers; max length).  
+  \item \textbf{Least-privilege DB accounts:} app user should only have needed rights (SELECT/INSERT/UPDATE limited to required tables).  
+  \item \textbf{Avoid detailed DB errors in production:} log full errors internally, show generic messages to users.  
+  \item \textbf{Whitelist input where possible:} when values are from a finite set (country codes, page IDs), validate against the whitelist.  
+\end{itemize}
+\newpage
+\subsection*{Cross-Site Scripting (XSS)}
+\textbf{What it is:} attacker injects malicious script that runs in other users’ browsers.
+
+\textbf{Simple gestures (do these now):}
+\begin{itemize}
+  \item \textbf{Output-encode/escape} all untrusted data when rendering HTML (use context-aware escaping: HTML, attribute, JS, URL).  
+  \item \textbf{Sanitize input} for rich text only if you must allow HTML (use a robust sanitizer library).  
+  \item \textbf{Enable framework auto-escaping:} default templating features (e.g., Django, Jinja, React) already escape—use them.  
+  \item \textbf{Set Content Security Policy (CSP)} with strict defaults (disallow inline scripts, restrict script sources).  
+  \item \textbf{Mark cookies HttpOnly and Secure}, to make stealing via XSS harder.  
+  \item \textbf{Limit user-supplied HTML:} prefer markdown/plain text and convert server-side with safe renderer.  
+\end{itemize}
+
+\subsection*{Cross-Site Request Forgery (CSRF)}
+\textbf{What it is:} attacker forces an authenticated user’s browser to send unwanted requests (state changes) to the app.
+
+\textbf{Simple gestures (do these now):}
+\begin{itemize}
+  \item \textbf{Use anti-CSRF tokens:} include a secure, per-session/per-form token and verify it server-side on state-changing requests.  
+  \item \textbf{Require unsafe methods for changes:} use POST/PUT/DELETE for actions, avoid GET for state changes.  
+  \item \textbf{Set cookie SameSite=strict or lax} where compatible to reduce cross-site cookie sending.  
+  \item \textbf{Verify Origin/Referer headers} for critical actions (reject requests with missing or wrong origin when possible).  
+  \item \textbf{Require re-auth or 2FA} for very sensitive operations (password change, funds transfer).  
+\end{itemize}
+
+
+% ---------------------------
+
+
+%====================================================
+% End (strictly following steps in ZAPROXY bwapp.pdf)
+%====================================================
+
+\section*{Final Illustration}
+%====================================================
+
+\begin{center}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{cc}
+    % Left image (OWASP ZAP scan log or dashboard)
+    \includegraphics[width=0.47\textwidth]{zap_dvwa.png} &
+    % Right image (creative / internship logo)
+    \includegraphics[width=0.43\textwidth]{1786.jpg} \\
+    \textbf{OWASP ZAP } & \textbf{Redynox Cyber Security Internship}
+\end{tabular}
+\end{center}
+
+\vspace{0.8cm}
+
+\begin{center}
+\textit{“Every vulnerable application is a chance to learn — every scan a step closer to secure design.”}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\includegraphics[width=0.15\textwidth]{icon sec.png}\\[4pt]
+\textbf{--- End of Task 2 Report ---}
+\end{center}
+
+
+%====================================================
+
+\end{document}

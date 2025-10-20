@@ -1,0 +1,850 @@
+%====================================================
+% Redynox Cybersecurity Internship - Comprehensive Report
+%====================================================
+\documentclass[12pt,a4paper]{report}
+
+%------------------------------------
+% Packages
+%------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[a4paper,margin=2.5cm,headsep=1.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{array,booktabs,longtable,multirow}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{tikz}        % for the cover stripe
+\usepackage{ifthen}
+\usepackage{url}
+
+% Load hyperref LAST
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+  pdftitle={Redynox Cybersecurity Internship - Final Report},
+  pdfauthor={Mohammed Ryad DERMOUCHE}
+]{hyperref}
+
+%------------------------------------
+% Formatting
+%------------------------------------
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\definecolor{maroonUA}{RGB}{114,23,47}
+\definecolor{lightrow}{RGB}{245,245,245}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{gray!70},
+  stringstyle=\color{teal!70!black}
+}
+\lstset{style=code}
+
+% Headings in maroon to match the theme
+\titleformat{\chapter}{\normalfont\huge\bfseries\color{maroonUA}}{\thechapter}{1em}{}
+\titleformat{\section}{\normalfont\Large\bfseries\color{maroonUA}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{maroonUA}}{\thesubsection}{0.6em}{}
+
+% Logo path (kept from your original idea)
+\newcommand{\logopath}{17486.jpg}
+
+% ----- Headers & Footers -----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % clear all
+
+% Couleur (déjà définie chez toi)
+% (ligne inoffensive pour éviter une redéfinition d'erreur)
+\colorlet{maroonUA}{maroonUA}
+
+% Chemin logo (déjà présent chez toi — adapte si besoin)
+\renewcommand{\logopath}{1786.jpg}
+
+% En-tête standard (pages normales)
+\lhead{\textit{Internship Report -- Redynox}}
+\rhead{\IfFileExists{\logopath}{\includegraphics[height=0.9cm]{\logopath}}{}}
+
+% Pied de page (numéro centré)
+\cfoot{\thepage}
+
+% Filet d'en-tête coloré
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{%
+  {\color{maroonUA}\hrule height \headrulewidth width\headwidth \vskip-0.4pt}
+}
+
+% Style 'plain' (pages spéciales: \tableofcontents, débuts de \chapter)
+% --> on y remet le même header pour qu'il apparaisse sur la ToC et débuts de chapitres
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \lhead{\textit{Internship Report -- Redynox}}
+  \rhead{\IfFileExists{\logopath}{\includegraphics[height=0.9cm]{\logopath}}{}}
+  \cfoot{\thepage}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\headrule}{%
+    {\color{maroonUA}\hrule height \headrulewidth width\headwidth \vskip-0.4pt}
+  }
+}
+
+%------------------------------------
+% Document
+%------------------------------------
+\begin{document}
+
+% ==================================================
+% Page 1 — Cover (same design as example)
+% ==================================================
+\thispagestyle{empty}
+
+% Right vertical maroon band
+\begin{tikzpicture}[remember picture,overlay]
+  % adjust 2.8cm if you want a thicker/thinner strip
+  \fill[maroonUA] (current page.north east) rectangle
+                  ($(current page.south east)+(-2.8cm,0)$);
+\end{tikzpicture}
+
+% Logo top-left (optional)
+\noindent
+\IfFileExists{\logopath}{\includegraphics[width=2.1cm]{\logopath}}{\rule{2.1cm}{0pt}}
+\vspace*{2.5cm}
+
+\begin{center}
+{\Large\bfseries CYBERSECURITY INTERNSHIP REPORT}\\[1.8cm]
+
+\fbox{\rule{0pt}{10pt}\hspace{1.2cm}\Large\bfseries Comprehensive Report – All Internship Tasks\hspace{1.2cm}}\\[2.2cm]
+
+\begin{minipage}{0.7\textwidth}
+\centering
+{\large Internship conducted at:}\\
+\textbf{Redynox Cybersecurity}\\
+\url{https://redynox.theredusers.tech/}\\[0.5cm]
+
+
+
+{\large Role:} Cyber Security Intern\\
+{\large Duration:} 21 September 2025 – 20 October 2025\\
+{\large Location:} Remote\\[1.6cm]
+
+{\large Submitted by:}\\
+\textbf{Mohammed Ryad DERMOUCHE}\\
+
+{\large Date:} \textbf{\today}
+\end{minipage}
+
+\end{center}
+
+\vfill
+\clearpage
+
+% ==================================================
+% Page 2 — Document Information (styled like example)
+% ==================================================
+\thispagestyle{empty}
+
+% small logo top-right
+\noindent\hfill
+\IfFileExists{\logopath}{\includegraphics[width=1.6cm]{\logopath}}{\rule{1.6cm}{0pt}}
+\vspace{0.6cm}
+
+{\Large\bfseries\color{maroonUA} Document Information}\par
+\vspace{0.6cm}
+
+% --- Identification block ---
+{\bfseries Document identification}\par
+\vspace{0.2cm}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\bfseries}p{6cm} p{9cm}}
+\toprule
+\rowcolor{lightrow} Document Reference: & REDYNOX-INTERNSHIP-REPORT-V1.00 \\
+Version: & 1.0 \\
+\rowcolor{lightrow} Date of Issue: & \today \\
+Author: & Mohammed Ryad DERMOUCHE \\
+\rowcolor{lightrow} Organization: & Redynox Cybersecurity \\
+Program Duration: & 21 September – 20 October 2025 \\
+\rowcolor{lightrow} Confidentiality: & Internal – For academic and evaluation use only \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.8cm}
+
+% --- Verification block ---
+{\bfseries Verification elements}\par
+\vspace{0.2cm}
+\begin{tabular}{>{\bfseries}p{6cm} p{9cm}}
+\toprule
+\rowcolor{lightrow} Validated by: & Ankit MATHUR (Redynox Lead Supervisor) \\
+Validation Date: & 20/10/2025 \\
+File Type: & PDF – Digital submission \\
+\rowcolor{lightrow} Reviewers: & Internship Supervisor (Redynox)\\
+\bottomrule
+\end{tabular}
+
+\vfill
+\clearpage
+
+%------------------------------------
+% Table of contents
+%------------------------------------
+\tableofcontents
+\newpage
+
+%====================================================
+\chapter{Introduction}
+%====================================================
+\section{Context}
+This report summarizes my participation in the \textbf{Redynox Cybersecurity Internship Program},
+held remotely from \textbf{21 September 2025 to 20 October 2025}.  
+The internship provided hands-on exposure to core areas of cybersecurity including network security,
+vulnerability assessment, penetration testing, and incident response.  
+The work was conducted under the supervision of \textbf{Ankit Mathur}, who guided interns through
+practical projects aligned with industry best practices.
+
+\section{Objectives}
+\begin{itemize}
+  \item Strengthen fundamental and applied cybersecurity knowledge.
+  \item Work on real-world security problems and simulation projects.
+  \item Document results and technical configurations professionally.
+  \item Develop teamwork, autonomy, and analytical capabilities.
+\end{itemize}
+
+\section{Structure of the Report}
+The report compiles all tasks accomplished during the program, organized into thematic chapters.
+Each task includes its goals, implementation, and learning outcomes.
+
+%====================================================
+\chapter{Task 1 – Introduction to Network Security Basics}
+%====================================================
+
+\section{Objective}
+Understand the basics of network security by learning about different types of network threats
+and how to implement basic security measures. This task introduces the foundational concepts
+of securing a small network.
+
+\section{Skills}
+\begin{itemize}
+  \item Basic Network Security
+  \item Threat Identification
+  \item Security Best Practices
+\end{itemize}
+
+\section{Tools}
+\begin{itemize}
+  \item Firewall (e.g., Windows Defender Firewall or a basic hardware firewall)
+  \item Wireshark
+\end{itemize}
+
+\section{Guidelines}
+ \newpage
+\subsection{1. Learn Network Security Concepts}
+
+
+Network security threats exploit vulnerabilities in systems, software, or human processes to compromise confidentiality, integrity, or availability of resources. Below are major categories of threats:
+\paragraph{Malware}
+Malicious software (malware) is any software intentionally designed to cause damage, steal data, or enable unauthorized access. Malware is a broad category comprising various subtypes: 
+\begin{itemize}
+  \item \textbf{Keyloggers:} Record keystrokes to steal credentials or sensitive input. Some advanced keyloggers run at kernel level and evade detection.   
+  \item \textbf{Trojans:} Disguised as legitimate programs but carry malicious features (backdoors, downloaders, credential harvesters). Trojans do not self-replicate.   
+  \item \textbf{Ransomware:} Encrypts files or systems and demands payment (usually cryptocurrency) for decryption. Even payment may not guarantee recovery.   
+  \item \textbf{Adware:} Generates unwanted advertisements; often less harmful but may degrade performance and indicate system compromise. 
+  \item \textbf{Spyware:} Covertly monitors and exfiltrates data (e.g. keystrokes, device info, emails) without alerting the user.   
+  \item \textbf{Logic bombs:} Trigger malicious actions when a condition is met (e.g. at a certain date or event).   
+  \item \textbf{Pharming:} Alters DNS or host files to redirect users to spoofed sites even if they enter correct URLs.   
+\end{itemize}
+
+\paragraph{Viruses and Worms}
+These are more “classic” types of malware, with distinct propagation mechanisms.  
+\begin{itemize}
+  \item \textbf{Virus:} Requires a host (file) to attach to and spreads when the host is executed. It often requires user interaction (open file, run application).   
+  \item \textbf{Worm:} Self-replicates and propagates across networks autonomously, without needing to attach to a host file. It can exploit vulnerabilities or weak passwords to spread rapidly.   
+\end{itemize}
+
+\paragraph{Botnets and DDoS}
+A botnet is a network of compromised devices controlled by an attacker (botmaster). Those devices can launch coordinated attacks such as Distributed Denial-of-Service (DDoS), overwhelming targets with traffic. 
+
+\paragraph{Phishing and Social Engineering}
+Rather than exploiting software vulnerabilities, these attacks exploit human trust. 
+\begin{itemize}
+  \item \textbf{Phishing:} Emails or messages impersonating trusted entities to lure users into revealing credentials or installing malware.
+  \item Variants include \textit{Spear phishing} (targeted), \textit{Whaling} (executives), \textit{Vishing} (voice), and \textit{Smishing} (SMS). 
+\end{itemize}
+
+\paragraph{SQL Injection and Other Application Attacks}
+Attackers exploit poorly sanitized inputs in web/application backends (e.g. search boxes) to inject SQL commands and extract or manipulate data.
+
+\paragraph{Man-in-the-Middle (MitM) Attacks}
+In MitM attacks, an attacker intercepts or manipulates communications between two parties, enabling eavesdropping or data injection. Encryption and secure protocols help mitigate this threat. 
+
+\paragraph{Insider Threats and Physical/Social Threats}
+Not all threats come from outside systems—some arise internally or physically:
+\begin{itemize}
+  \item \textbf{Insider Threats:} Users within an organization (employees, contractors) misuse access—intentionally or accidentally—to compromise systems.  
+  \item \textbf{Physical/Social Threats:} Includes “shoulder surfing,” tailgating into secure areas, dumpster diving for documents, or tampering with hardware. :contentReference[oaicite:17]{index=17}  
+\end{itemize}
+
+\paragraph{Blended / Multi-Vector Threats}
+Many attacks today combine multiple methods. For example, a worm might spread and trigger ransomware, or phishing might deliver a Trojan that later performs a DDoS. 
+
+\paragraph{Summary}
+Every threat above targets different system weaknesses: software bugs, weak configurations, or human error. A robust defense must combine technical controls (patching, firewalls, encryption) with awareness and secure practices.  
+\newpage
+
+To protect systems against the threats described above, it is essential to understand several foundational
+security concepts that form the basis of every secure network environment: \textbf{firewalls}, 
+\textbf{encryption}, and \textbf{secure configurations}. These mechanisms collectively ensure 
+that data remains confidential, integrity is preserved, and systems stay available to legitimate users.
+
+\paragraph{1. Firewalls}
+A \textbf{firewall} acts as a barrier between trusted and untrusted networks. 
+It filters incoming and outgoing traffic based on defined security rules and policies. 
+Firewalls can be implemented in hardware, software, or both.
+
+\begin{itemize}
+  \item \textbf{Packet-filtering firewalls:} Examine packets individually and allow or deny them based on source/destination IP, port, or protocol.
+  \item \textbf{Stateful inspection firewalls:} Track the state of connections and make filtering decisions based on the session context.
+  \item \textbf{Proxy firewalls (Application layer):} Intercept and inspect traffic at the application level (e.g., HTTP proxy) to detect malicious payloads.
+  \item \textbf{Next-Generation Firewalls (NGFW):} Combine deep packet inspection, intrusion prevention, and application awareness.
+\end{itemize}
+
+\textbf{Example:} Windows Defender Firewall on a workstation can block unauthorized inbound connections, 
+while an enterprise firewall appliance may enforce policies between internal and external networks.
+
+\paragraph{2. Encryption}
+\textbf{Encryption} converts readable data (plaintext) into unreadable data (ciphertext) using cryptographic algorithms and keys. 
+It ensures that only authorized parties can access sensitive information, even if the data is intercepted.
+
+\begin{itemize}
+  \item \textbf{Data in transit:} Protected by protocols such as HTTPS (TLS/SSL), SSH, and IPsec. 
+  \item \textbf{Data at rest:} Secured using full-disk encryption or encrypted storage (e.g., BitLocker, VeraCrypt).
+  \item \textbf{Symmetric encryption:} Uses the same key for encryption and decryption (e.g., AES, ChaCha20).
+  \item \textbf{Asymmetric encryption:} Uses a pair of keys (public/private) for secure communication and authentication (e.g., RSA, ECC).
+\end{itemize}
+
+\textbf{Example:} A Wi-Fi network using WPA3 encrypts all wireless communications, 
+preventing eavesdroppers from capturing readable traffic.
+
+\paragraph{3. Secure Network Configurations}
+Even the strongest firewall and encryption are ineffective if systems are poorly configured. 
+\textbf{Secure configuration} means adjusting default settings, disabling unnecessary services, and enforcing the least-privilege principle.
+
+\begin{itemize}
+  \item Change default passwords on routers, switches, and IoT devices immediately after setup.
+  \item Disable unused ports, interfaces, and services to minimize attack surface.
+  \item Keep firmware and operating systems updated to patch known vulnerabilities.
+  \item Segment networks (e.g., VLANs) to isolate critical assets from less secure zones.
+  \item Use strong authentication methods (e.g., multi-factor authentication).
+\end{itemize}
+
+\textbf{Example:} In a small home network, changing the router’s default admin credentials and enabling WPA2/WPA3 wireless encryption 
+significantly reduces the risk of compromise.
+
+\paragraph{Summary}
+These three pillars—firewalls, encryption, and secure configuration—work together to establish 
+a layered defense strategy. A firewall controls network boundaries, encryption protects data 
+confidentiality, and secure configuration ensures that default vulnerabilities are removed.
+
+
+
+%----------------------------------------------------
+%====================================================
+    \section{Implement Basic Security Measures}
+%====================================================
+
+This section describes the implementation of fundamental network security measures
+within a controlled virtual laboratory environment. The objective was to design and deploy
+a small yet realistic network architecture using virtualization tools and security-oriented components.
+
+\subsection{ Setting Up a Simple Network Environment}
+
+A complete virtual network was created using Oracle VirtualBox in order to simulate a secure internal infrastructure.
+The environment consisted of three virtual machines: one acting as a firewall and router using pfSense,
+and two client machines running Kali Linux and Ubuntu respectively. This setup provided an isolated testbed
+for analyzing network behavior, routing, and connectivity.
+
+\paragraph{Network Architecture}
+
+The pfSense virtual machine was configured with three network interfaces to manage connectivity between the internal
+and external segments:
+
+\begin{itemize}
+    \item \textbf{Adapter 1 (WAN – NAT):} connects the pfSense firewall to the external Internet through the host system.
+    \item \textbf{Adapter 2 (LAN – Internal Network 1):} connects pfSense to the first internal virtual machine (Kali Linux).
+    \item \textbf{Adapter 3 (LAN – Internal Network 2):} connects pfSense to the second internal virtual machine (Ubuntu).
+\end{itemize}
+
+Each client VM had its own internal network interface, previously set to NAT and later modified
+to join the same internal network segment as pfSense. This ensured that all traffic from the internal hosts
+passed through the firewall before reaching the Internet.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Pfsense reboot.png}
+  \caption{Virtual network topology showing pfSense, Kali, and Ubuntu interconnected through VirtualBox.}
+\end{figure}
+
+\paragraph{Initial Connectivity Verification}
+
+Once all virtual machines were launched, pfSense displayed its assigned IP addresses for both the WAN and LAN interfaces.
+The DHCP service within pfSense automatically distributed IP addresses to both internal clients,
+placing them in the same local network.
+
+Network interfaces were verified on each VM using:
+\begin{verbatim}
+ip a
+\end{verbatim}
+
+Both Kali and Ubuntu successfully obtained dynamic IP addresses through DHCP,
+confirming that pfSense was correctly functioning as the local DHCP server.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ip adress ali linux.png}
+  \caption{IP configuration of Kali and Ubuntu obtained through pfSense DHCP service.}
+\end{figure}
+
+\paragraph{LAN Communication Test}
+
+To verify internal communication, each client machine sent ICMP echo requests to the pfSense gateway:
+\begin{verbatim}
+ping 192.168.1.1
+\end{verbatim}
+
+The positive replies indicated that both systems could successfully reach pfSense through the internal LAN.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ping pfSense test.png}
+  \caption{Successful ping replies to pfSense gateway confirming LAN connectivity.}
+\end{figure}
+
+\paragraph{Internet Connectivity Test}
+
+After confirming LAN functionality, Internet access was tested by pinging external hosts such as Cloudflare and Google DNS:
+\begin{verbatim}
+ping 1.1.1.1
+ping google.com
+\end{verbatim}
+
+Both tests succeeded, proving that pfSense was properly translating internal addresses through NAT
+and routing traffic to the Internet.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ping internet test.png}
+  \caption{Internet connectivity test confirming proper NAT and routing through pfSense.}
+\end{figure}
+
+\paragraph{Gateway Dependency Validation}
+
+To demonstrate pfSense’s role as the default gateway, the firewall was temporarily powered off.
+Both client systems instantly lost Internet access, as there was no route available outside the LAN.
+After restarting pfSense, connectivity was restored and verified once again using the same ping commands.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ping internet lost.png}
+  \caption{Loss of Internet access during pfSense shutdown, confirming gateway dependency.}
+\end{figure}
+
+\paragraph{Web Interface Configuration}
+
+Finally, pfSense was accessed through its web configuration interface.
+From either internal machine, the browser was directed to the local address:
+
+\begin{verbatim}
+https://192.168.1.1
+\end{verbatim}
+
+After accepting the self-signed certificate, the administrator logged in with the default credentials:
+\begin{verbatim}
+Username: admin
+Password: pfsense
+\end{verbatim}
+
+The setup wizard was completed, allowing customization of DNS servers, time zone, and administrative settings.
+Once configuration was saved, connectivity was tested again and confirmed to be fully operational.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{pfense config.png}
+  \caption{pfSense WebGUI accessed from an internal host for final configuration and verification.}
+\end{figure}
+
+\paragraph{Summary}
+
+This step established a secure virtual lab replicating a real-world network architecture.
+pfSense successfully operated as the central firewall, DHCP, and NAT gateway,
+allowing internal hosts to communicate locally and access the Internet through a single controlled point.
+The tests validated that routing, DHCP, and NAT mechanisms were correctly implemented and functional.
+
+A secure lab environment is necessary to test configurations safely. 
+
+%====================================================
+\section{Implementing WPA2 / WPA3 Wireless Security}
+%====================================================
+
+\subsection{Understanding WPA2 / WPA3 Compared to Ethernet}
+
+During this part of the work, I focused on understanding the difference between 
+wired Ethernet communication and encrypted wireless communication using WPA2 and WPA3 protocols.
+
+WPA2 (Wi-Fi Protected Access 2) and WPA3 are encryption mechanisms that secure 
+data transmitted over Wi-Fi networks. They ensure the confidentiality of communications 
+between a client and an access point through cryptographic key exchanges.  
+Unlike these, \textbf{Ethernet} is a wired connection where the signal travels 
+through a physical cable, which inherently limits interception risks.  
+Therefore, while Ethernet relies mainly on network-level protection such as 
+firewalls or VLAN segmentation, Wi-Fi networks require encryption at the radio layer.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+\hline
+\textbf{Feature} & \textbf{Ethernet (wired)} & \textbf{WPA2 (wireless)} & \textbf{WPA3 (wireless)} \\
+\hline
+Transmission medium & Physical cable (RJ-45) & Radio waves & Radio waves \\
+\hline
+Encryption & Not required (physical medium) & AES-CCMP symmetric encryption & SAE handshake (enhanced security) \\
+\hline
+Vulnerability & Physical access only & Susceptible to sniffing or weak passwords & Strong resistance to password-guessing \\
+\hline
+Typical use & LAN networks & Home and office Wi-Fi & Modern secured Wi-Fi environments \\
+\hline
+\end{tabular}
+\caption{Comparison between Ethernet and WPA2/WPA3 wireless communications.}
+\end{table}
+
+%----------------------------------------------------
+
+\subsection{Practical Implementation on Windows}
+
+To experiment with these concepts, I implemented a small wireless network on Windows 
+and connected a second physical host to it.  
+The goal was to observe the process of wireless encryption in practice 
+and to verify the use of WPA2 or WPA3 protocols.
+
+%----------------------------------------------------
+
+\paragraph{Checking the adapter capabilities}
+
+I first verified whether my wireless adapter supported the hosted network mode.  
+Using PowerShell with administrative privileges, I executed:
+
+\begin{lstlisting}[language=bash]
+netsh wlan show drivers
+\end{lstlisting}
+
+The result indicated that hosted networks were not supported:
+
+\begin{verbatim}
+Hosted network supported : No
+\end{verbatim}
+
+This meant that the older command-line approach could not be used, 
+and I had to rely on the graphical configuration via Windows Mobile Hotspot.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{netsh_driver_output.png}
+\caption{PowerShell output showing that the hosted network is not supported by the adapter.}
+\end{figure}
+
+%----------------------------------------------------
+
+\paragraph{Setting up the hotspot}
+
+I then created a wireless access point manually through 
+\textbf{Settings → Network \& Internet → Mobile Hotspot}.  
+I configured the network with the following parameters:
+
+\begin{itemize}
+  \item \textbf{Network name (SSID):} Redynox\_Lab
+  \item \textbf{Password:} StrongPass2025
+  \item \textbf{Band:} 2.4 GHz
+\end{itemize}
+
+Once the configuration was saved, I enabled the switch 
+“Share my Internet connection with other devices.”  
+Windows automatically established a secure hotspot using WPA2-Personal encryption, 
+or WPA3 if supported by the adapter.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{mobile_hotspot_settings.png}
+\caption{Configuration of the Windows Mobile Hotspot with custom SSID and password.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{mobile_hotspot_active.png}
+\caption{Hotspot successfully enabled and ready to broadcast.}
+\end{figure}
+
+%----------------------------------------------------
+
+\paragraph{Client connection}
+
+A second computer was used as the client device.  
+It detected the network \textbf{Redynox\_Lab} among available Wi-Fi networks, 
+connected using the password configured earlier, and obtained an IP address automatically.  
+The connection was established successfully, confirming that the access point 
+was operational and encrypted.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{client_connect_wifi.png}
+\caption{The client machine connecting to the Redynox\_Lab WPA2 network.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{client_connected_status.png}
+\caption{Client device successfully connected to the wireless access point.}
+\end{figure}
+
+%----------------------------------------------------
+
+\paragraph{Verification of encryption}
+
+After establishing the connection, I verified the encryption type again 
+through PowerShell using:
+
+\begin{lstlisting}[language=bash]
+netsh wlan show drivers
+\end{lstlisting}
+
+The output listed the authentication and cipher suites supported by the card, 
+confirming the presence of both WPA2-Personal and WPA3-Personal (CCMP).
+
+\begin{verbatim}
+Authentication and cipher supported :
+    WPA2-Personal  (CCMP)
+    WPA3-Personal  (CCMP)
+\end{verbatim}
+
+These results confirmed that the connection was secured using WPA2 or WPA3 encryption.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{verify_wpa_encryption.png}
+\caption{Verification of the WPA2/WPA3 encryption support in PowerShell.}
+\end{figure}
+
+%----------------------------------------------------
+
+\paragraph{Disabling the hotspot}
+
+Once the tests were completed, I disabled the access point 
+to restore the Wi-Fi adapter to its normal mode.  
+This was done either by turning off the \textbf{Mobile Hotspot} switch 
+in Windows settings or by running:
+
+\begin{lstlisting}[language=bash]
+netsh wlan stop hostednetwork
+\end{lstlisting}
+
+
+
+%----------------------------------------------------
+
+\subsection{Results and Analysis}
+
+The experiment demonstrated how a Windows host can be used as a secure 
+wireless access point through the built-in Mobile Hotspot feature.  
+The created network, \textbf{Redynox\_Lab}, relied on WPA2-Personal encryption 
+to protect data transmitted over the wireless link.  
+The client computer successfully connected to this AP and obtained network access.  
+The test confirmed that wireless communication, unlike Ethernet, 
+requires encryption mechanisms such as WPA2/WPA3 to ensure data confidentiality 
+against interception within the radio range
+
+\newpage
+
+%====================================================
+\section{Monitoring Network Traffic with Wireshark}
+%====================================================
+
+\subsection{Environment}
+All captures were performed inside the Kali Linux virtual machine.  
+The VM was connected to the lab network and assigned an IP address.  
+Wireshark (running as root) was used to capture live traffic on the VM interface \texttt{eth0}.
+
+%----------------------------------------------------
+\subsection{Capture procedure and observed traffic}
+
+\paragraph{Step 1 — Start capture}
+I launched Wireshark and selected the interface \texttt{eth0} from the interface list.  
+I then started a live capture by pressing the Start button. The capture began to populate the packet list immediately.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ws_start_eth0.png}
+  \caption{Wireshark started on the VM interface \texttt{eth0}; packet list begins to populate.}
+\end{figure}
+
+\paragraph{Step 2 — Generate web traffic}
+In the VM I opened Firefox and loaded a web page (YouTube was used as an example).  
+This generated HTTP/HTTPS traffic visible in the capture.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ws_firefox_youtube.png}
+  \caption{Web browsing activity (YouTube) generated HTTP/HTTPS traffic captured by Wireshark.}
+\end{figure}
+
+\paragraph{Step 3 — Generate ICMP traffic}
+From a terminal inside the VM I issued a ping command to a public resolver to generate ICMP traffic:
+\begin{lstlisting}[language=bash]
+ping -c 6 1.1.1.1
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ws_ping_command.png}
+  \caption{Terminal showing the \texttt{ping 1.1.1.1} command executed to generate ICMP packets.}
+\end{figure}
+
+\paragraph{Step 4 — Stop capture and save}
+After a short interval of activity I stopped the capture and saved the capture file as \texttt{redynox\_lab\_capture.pcapng} for analysis.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ws_stop_save.png}
+  \caption{Capture stopped and saved as \texttt{redynox\_lab\_capture.pcapng}.}
+\end{figure}
+
+%----------------------------------------------------
+\subsection{Analysis using display filters}
+
+I used Wireshark display filters to isolate and label the different protocol activities observed during the capture.
+
+\paragraph{DNS (name resolution)}
+Filter used:
+\begin{lstlisting}
+dns
+\end{lstlisting}
+Observation: DNS queries and responses showed the hostname-to-IP resolution (for example, resolving \texttt{google.com} to one or more IP addresses).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ws_dns_filter.png}
+  \caption{Filtered view showing DNS queries and responses (name resolution).}
+\end{figure}
+
+\paragraph{HTTP (cleartext web traffic)}
+Filter used:
+\begin{lstlisting}
+http
+\end{lstlisting}
+Observation: HTTP GET requests and server responses were visible when the site served non-encrypted resources (or early redirects). The filter displayed full request lines and headers for cleartext HTTP traffic.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ws_http_filter.png}
+  \caption{Filtered view showing HTTP GET requests and responses.}
+\end{figure}
+
+\paragraph{HTTPS / TLS (encrypted web traffic)}
+Filter used:
+\begin{lstlisting}
+tls
+\end{lstlisting}
+Observation: HTTPS sessions appeared as TLS records (Client Hello, Server Hello, encrypted application data). Payloads were encrypted and not readable without the session keys.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ws_tls_filter.png}
+  \caption{Filtered view showing TLS (HTTPS) handshake frames and encrypted records.}
+\end{figure}
+
+\paragraph{ICMP (ping) }
+Filter used:
+\begin{lstlisting}
+icmp
+\end{lstlisting}
+Observation: ICMP Echo Request and Echo Reply packets corresponding to the \texttt{ping} command were visible and allowed verification of basic network reachability.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{ws_icmp_filter.png}
+  \caption{Filtered view showing ICMP Echo Request and Echo Reply packets generated by the \texttt{ping} command.}
+\end{figure}
+
+%----------------------------------------------------
+\subsection{Notes \& conclusions}
+
+\begin{itemize}
+  \item The capture confirmed typical protocol behavior for a client on the local subnet: DNS name resolution (DNS), web traffic (HTTP/HTTPS), and diagnostic traffic (ICMP).
+  \item HTTPS traffic was visible only at the TLS layer (handshake and encrypted records); application payloads remained encrypted and were not readable from the capture.
+  \item For documentation, the saved capture file and the screenshots were included as evidence of the capture and the filter-based analysis.
+\end{itemize}
+
+
+%====================================================
+\section{Reflection on Security Best Practices}
+%====================================================
+
+\paragraph{Additional security measures for larger or more complex networks}
+In a production environment, the basic controls implemented in this lab would be extended with additional, layered defenses. Key measures include:
+\begin{itemize}
+  \item \textbf{Network segmentation and VLANs:} Isolate critical systems (servers, management, IoT) to limit lateral movement and reduce blast radius.
+  \item \textbf{Centralized logging and SIEM:} Aggregate logs from firewalls, endpoints and servers to enable detection, correlation and fast incident response.
+  \item \textbf{Intrusion Detection / Prevention (IDS/IPS):} Deploy inline or network-based IDS/IPS to detect and block malicious traffic patterns.
+  \item \textbf{Strong access controls and multi-factor authentication (MFA):} Enforce least privilege and require MFA for administrative access to network devices and cloud services.
+  \item \textbf{Endpoint protection and patch management:} Maintain EDR/antivirus on endpoints and a robust patching cadence for OS and firmware updates.
+  \item \textbf{Network Access Control (NAC):} Validate and enforce security posture of devices before granting network access.
+  \item \textbf{Encrypted tunnels and segmentation for remote access:} Use VPNs or Zero-Trust access proxies for secure remote connectivity and micro-segmentation for sensitive applications.
+  \item \textbf{Backup, recovery and business continuity planning:} Regularly back up critical data and test restore procedures to minimize downtime after an incident.
+\end{itemize}
+
+\paragraph{Short paragraph on educating others about everyday network security}
+To improve security awareness, I advocated a practical, repeatable approach: teach users a small set of high-impact hygiene rules, demonstrate them live, and reinforce them often. The curriculum focused on (1) creating and managing strong passwords (use of password managers), (2) recognising phishing and suspicious links via short interactive examples, (3) keeping devices and applications updated, and (4) using MFA for important accounts. I recommended short instructor-led sessions, hands-on labs (e.g. safe phishing simulations), visible reminders (posters, intranet banners), and periodic micro-training emails. This simple, continuous program helps convert abstract policies into everyday habits and measurably reduces common user-driven risks.
+
+%====================================================
+\section*{Final Illustration}
+%====================================================
+
+\begin{center}
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{cc}
+    % Left image (Wireshark capture)
+    \includegraphics[width=0.47\textwidth]{WIRESHARK.jpg} &
+    % Right image (logo or creative image)
+    \includegraphics[width=0.43\textwidth]{1786.jpg} \\
+    \textbf{Wireshark Network Capture Overview} & \textbf{Redynox Cybersecurity Internship}
+\end{tabular}
+\end{center}
+
+\vspace{0.8cm}
+
+\begin{center}
+\textit{“Secure networks are not built by chance, but through awareness, monitoring, and continuous learning.”}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\includegraphics[width=0.15\textwidth]{icon sec.png}\\[4pt]
+\textbf{--- End of Task 1 Report ---}
+\end{center}
+
+%====================================================
+
+\end{document}
